@@ -1,0 +1,134 @@
+% ****** Start of file apssamp.tex ******
+%
+%   This file is part of the APS files in the REVTeX 4.1 distribution.
+%   Version 4.1r of REVTeX, August 2010
+%
+%   Copyright (c) 2009, 2010 The American Physical Society.
+%
+%   See the REVTeX 4 README file for restrictions and more information.
+%
+% TeX'ing this file requires that you have AMS-LaTeX 2.0 installed
+% as well as the rest of the prerequisites for REVTeX 4.1
+%
+% See the REVTeX 4 README file
+% It also requires running BibTeX. The commands are as follows:
+%
+%  1)  latex apssamp.tex
+%  2)  bibtex apssamp
+%  3)  latex apssamp.tex
+%  4)  latex apssamp.tex
+%
+\documentclass[%
+ reprint,
+%superscriptaddress,
+%groupedaddress,
+%unsortedaddress,
+%runinaddress,
+%frontmatterverbose, 
+%preprint,
+%showpacs,preprintnumbers,
+%nofootinbib,
+%nobibnotes,
+%bibnotes,
+ amsmath,amssymb,
+ aps,
+%pra,
+%prb,
+%rmp,
+%prstab,
+%prstper,
+%floatfix,
+]{revtex4-1}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{comment}
+\usepackage{amsmath}
+%\usepackage{hyperref}% add hypertext capabilities
+%\usepackage[mathlines]{lineno}% Enable numbering of text and display math
+%\linenumbers\relax % Commence numbering lines
+
+%%\usepackage[showframe,%Uncomment any one of the following lines to test 
+%%scale=0.7, marginratio={1:1, 2:3}, ignoreall,% default settings
+%%text={7in,10in},centering,
+%%margin=1.5in,
+%%total={6.5in,8.75in}, top=1.2in, left=0.9in, includefoot,
+%%height=10in,a5paper,hmargin={3cm,0.8in},
+%%]{geometry}
+
+\begin{document}
+
+%\preprint{APS/123-QED}
+
+\title{Adiabatic Quantum Computation}% Force line breaks with \\
+
+\author{Adam Mills}
+\email{armills@princeton.edu}
+\affiliation{Princeton University}
+
+\date{\today}% It is always \today, today,
+             %  but any date may be explicitly specified
+
+\begin{abstract}
+[***INSERT ABSTRACT***]
+\end{abstract}
+
+\maketitle
+
+%\tableofcontents
+
+%===================================================
+
+   Most anyone who has studied quantum computation (QC) is familiar with the circuit, or gate, model of QC \cite{Deutsch73}. It closely resembles classical computing in that you start with a given state and then perform a series of gates on your qubits. In the end, the final state is, more or less, the answer that you are looking for. 
+
+   There is, however, an entirely different approach to quantum computation that does not employ quantum gates. Adiabatic Quantum Computation (AQC) attempts to solve a computational problem by encoding the solution to the problem in the ground state of some Hamiltonian and adiabatically transitioning from some initial Hamiltonian to the final Hamiltonian\cite{RevModPhys.90.015002}. The idea is that the initial Hamiltonian is easy to prepare in the ground state while the final Hamiltonian is more difficult. At the end of the adiabatic transition, the system will still be in the ground state barring any disturbances.
+   
+   Adiabatic quantum computation is considered a rather robust form of quantum computation because the goal is to stay in the ground state, where the system will want to remain anyways as long as excitative interactions are mostly suppressed. However, being a relatively robust form of quantum computation not enough to make a computational method attractive. 
+   
+   The most important question that has to be answered is whether or not AQC provides a quantum speedup over classical algorithms. A quantum speedup can be classified in several ways\cite{RevModPhys.90.015002}. A ``provable'' quantum speedup is backed by a proof that no classical algorithm can outperform the quantum algorithm. A ``strong'' quantum speedup compares the quantum algorithm to the best classical algorithm, explicitly known or not, but is not backed by any solid proof. A ``quantum speedup'' is a speedup against the best available classical algorithm, but could be superseded by a better classical algorithm. Finally, a ``limited'' quantum speedup is a speedup by comparison to a classical algorithm that uses the same algorithmic approach, but on classical hardware.
+   
+   Arguably, the most interesting class of speedups are the provable quantum speedups as they guarantee that the effort put into implementing a reliable quantum algorithm will yield the desired result. For AQC, there are several algorithms that offer a provable quantum speedup, three of which are briefly presented below.
+   
+   \begin{itemize}
+   	\item The adiabatic Grover search algorithm is the AQC parallel of the circuit model Grover search algorithm. The goal of the algorithm is to find a marked item, or multiple marked items, in an unsorted database of \textit{N} items with as few queries to the database as possible. A classical algorithm must query the database until the marked item is found. As a result, the number of queries will scale linearly in \textit{N}. On the other hand, the adiabatic Grover algorithm scales as $\sqrt{N}$ offering a quadratic speedup over classical algorithms.
+   \item The adiabatic Deutsch-Jozsa algorithm is another AQC parallel of an existing circuit model algorithm. The Deutsch-Jozsa problem is to determine whether or not a function, $f: \lbrace0,1\rbrace^n \longmapsto \lbrace0,1\rbrace$, is balanced or constant using as few calls to the function as possible. Classical algorithms require $2^{n-1} + 1$ queries to $f$ in the worst case since a balanced function could return a constant answer for the first $2^{n-1}$ queries. Just like the quantum circuit model Deutsch-Jozsa algorithm, the adiabatic run time is $O(1)$.
+   \item The adiabatic Bernstein-Vazirani algorithm solves the problem of locating an unknown binary string $ a \in \lbrace0,1\rbrace^n  $ with as few queries to the oracle as possible. (Refer to Nielsen and Chuang, Ch. 5, for a discussion on oracles). The circuit model and adiabatic model both offer a solution that runs with $O(1)$ queries. Both offering a polynomial quantum speedup over classical algorithms that require $n$ queries.
+   \end{itemize}
+   
+   These three examples illuminate an important relation in quantum computation. Each adiabatic algorithm had a quantum circuit model counterpart that scaled the same way. Although three examples is nothing you can draw a definitive conclusion from, it is no coincidence that this correlation exists. In fact, adiabatic quantum computation is proven to be equivalent, up to polynomial overhead, to the circuit model and thus universal\cite{Aharanov2007}. 
+   
+   To borrow a definition from Albash \textit{et al.}: ``A time-dependent Hamiltonian $H(t), t\in [0,t_{f}]$ is universal for AQC if, given an arbitrary quantum circuit $U$ operating on an arbitrary initial state $\vert\psi\rangle$ of $n$ p-state particles and having depth $L$, the ground state of $H(t_f)$ is equal to $U\vert\psi\rangle$ with probability greater than $\epsilon>0$, the number of particles $H(t)$ operates on is $poly(n) \forall t$, and $t_f = poly(n,L)$\cite{RevModPhys.90.015002}.''
+   
+   This definition stipulates that the final state of the circuit, $U\vert\psi\rangle$, is equal to the ground state of $H(t_f)$, ensuring that the circuit model and adiabatic model of computation have the same output. It is important to note that as a result of their equivalence, quantum circuits can simulate adiabatic computations [CITE: Farhi et al (2000)]  and vice versa\cite{Aharanov2007}. In fact, the proofs of these two claims are the foundation of the establishment of equivalence between the two models.
+   
+   There are a few different constructions of universal AQC based on simulating a quantum circuit that is described by a sequence of $L$ one-qubit or two-qubit unitary gates $U_1 , U_2 , ... U_L$. Two examples are worth mentioning in conjunction as they tackle the problem with a completely different physical framework. Fermionic ground state quantum computation is a method of AQC that executes an $n$-qubit quantum circuit of depth $L$ by spatially encoding the entire temporal trajectory of the circuit, from input to output, in the ground state of a two-dimensional array of quantum dots[CITE: Mizel, Mitchell, and Cohen 2001]. The system is constructed with $L+1$ columns and $2n$ rows, where the rows correspond to the $\vert 0 \rangle$ and $\vert 1 \rangle$ basis states of the qubit. For each unitary gate, a Hamiltonian term is introduced with off-diagonal terms that represent hopping or tunneling of the electron between neighboring sites and unitary terms that act on the electron's spin.
+
+%===================================================
+
+\begin{comment}
+
+% Below are examples of the syntax used to generate titles
+
+\section{\label{sec:level1}First-level heading}
+
+\subsection{\label{sec:level2}Second-level heading: Formatting}
+
+\subsubsection{Wide text (A level-3 head)}
+
+\subsection{\label{sec:citeref}Citations and References}
+
+\subsubsection{Citations}
+
+\paragraph{Syntax}
+
+\end{comment}
+
+% Here, we can 
+\nocite{*} % Attaches all citations to end, regardless of whether or not they were used in text
+\bibliographystyle{apsrev4-1} % Get bibliography formatting
+\bibliography{/Users/adam/Documents/Bibliography/FinalPaperBib} % This is where your bibtex citations go
+
+\end{document}
+%
+% ****** End of file apssamp.tex ******
