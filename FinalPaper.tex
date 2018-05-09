@@ -171,8 +171,50 @@ in the $\vert m_s,m_l \rangle$ basis of the NV qubit. The state encodes the solu
 		H = DS_z^2 + \gamma_lB_zS_z + QI_z^2 + \gamma_nB_zI_z + \hat{S}\tilde{A}\hat{I}.
 	\end{equation}
 
-	This Hamiltonian can be transformed into the adiabatic evolution Hamiltonian, \ref{eq:Ht}, by applying radio frequency (RF) and microwave (MW) driving\cite{Kong2016}.
+	This Hamiltonian can be transformed into the adiabatic evolution Hamiltonian, \ref{eq:Ht}, by applying radio frequency (RF) and microwave (MW) driving\cite{Kong2016}. Using the same notation as Xu \textit{et al.}, the system Hamiltonian under rf and MW driving is
+	\begin{equation}
+	\begin{split}
+		H^{rot}_{NV} = \left( \delta_{MW} + \delta_{RF} \right)\hat{I} + \Omega_{MW}2S_xI_z \\ - \delta_{RF}I_z + \Omega_{RF}I_x - \delta_{MW}S_z.
+	\end{split}
+	\label{eq:rotNV}
+	\end{equation}
 	
+	In this system Hamiltonian, $\Omega_{MW}$ and $\Omega_{RF}$ are the Rabi frequencies while $\delta_{MW}$ and $\delta_{RF}$ are the detunings. Now set $\delta_{RF}=0$, $\Omega_{MW}\equiv s(t)g_1$, $\Omega_{RF}=-\delta_{MW}\equiv \left(1-s(t)\right)g_2$, and drop the identity operator. \ref{eq:rotNV} becomes
+	\begin{equation}
+		H^{rot}_{NV} = s(t)g_12S_xI_z + \left(1-s(t)\right)g_2\left(I_x + S_z\right)
+	\end{equation}
+which is almost exactly \ref{eq:Ht} using $H_p$ and $H_0$ defined for this problem. In order to complete the transformation, apply a Hadamard gate on the electron spin subspace which exchanges $S_x$ and $S_z$ and we get the Hamiltonian in the desired form
+	\begin{equation}
+		H^{rot}_{NV} = s(t)g_12S_zI_z + \left(1-s(t)\right)g_2\left(I_x + S_x\right).
+	\end{equation}
+	
+	Up until this point the discussion has remained largely theoretical. If we are able to map our problem onto a Hamiltonian, find an initial Hamiltonian that does not commute with $H_p$, perform the adiabatic transformation, and finally read out the final state reliably we have solved our computational problem using AQC. Let us now delve into the details of the experiment performed by Xu \textit{et al.} enough to show how this is realized in the lab and what the results look like. 
+
+	\begin{figure}
+	\includegraphics[scale=0.49]{Fig2XuEtAl}
+	\caption{	
+		FIG 1. The pulse sequence of the adiabatic factorization process. Under the condition that the external magnetic field is near 510 G aligned with the NV axis, the 532 nm laser pulse initializes both the electron spin and the $^{14}$N nuclear spin. To prepare the initial state to $\Psi_i = \dfrac{1}{2}\left(\vert 0 \rangle - \vert 1 \rangle   \right)\left(\vert 0 \rangle - \vert 1 \rangle   \right)$, RF and MW pulses are applied successively. The above panel shows that the adiabatic evolution can be realized through continuously applying the RF and MW pulses. In the actual experiment, evolution of the state is driven by the optimal control pulse instead. In the lower panel is the optimal control pulse applied on the nuclear spin. (Figure and caption taken from Xu \textit{et al.}\cite{Xu2017})
+	}	
+	\end{figure}
+	\label{fig:pulse}
+	
+	An overview of the procedure is shown in \ref{fig:pulse}. The NV electron spin and the nitrogen nuclear spin are polarized at the same time by applying a laser pulse at 532 nm. Then MW and RF $-\pi_y/2$ pulses ($\pi/2$ rotations about the $-y$ axis) are applied to prepare the initial state $\Psi_i = \dfrac{1}{2}\left(\vert 0 \rangle - \vert 1 \rangle   \right)\left(\vert 0 \rangle - \vert 1 \rangle   \right)$. The adiabatic process is then approximated by shaped pulses and finally tomography is performed to measure the population distribution. 
+
+	\begin{figure}
+	\includegraphics[scale=0.49]{Fig3XuEtAl}
+	\caption{	
+		FIG 2. Final state density matrix. (a) The real and (b) the imaginary part of the density matrix. From this final state, we can infer the answer of the factorization is $\left\lbrace p=1, q=0 \right\lbrace$ or $\left\lbrace p=0, q=1 \right\lbrace$ (Figure and caption taken from Xu \textit{et al.}\cite{Xu2017})
+	}	
+	\end{figure}
+	\label{fig:densitymatrix}
+	
+	The results of the experiment are shown in \ref{fig:densitymatrix} as the final state density matrix. The concentration in the middle shows that the final state is most likely $\Psi_i = \dfrac{1}{\sqrt{2}}\left(\vert 01 \rangle + \vert 10 \rangle   \right)$. From this, we can extract the values of $p$ and $q$ by recalling the final state vector will be of the form $\vert pq \rangle$. The factoring problem that we were trying to solve was to find $1p1$ and $1q1$ in binary, as these are the prime factors of 35. Therefore, the algorithm yields the binary numbers $101$ and $111$ as the two prime factors which are 5 and 7 in decimal.
+	
+	This experiment exhibits the potential power of adiabatic quantum computing. Using a single qubit, the number 35 was factorized with a fidelity of about \%81 \cite{Xu2017}. The mapping scheme used to create the problem Hamiltonian scales to multiple qubits and could thus be leveraged to factor larger numbers.
+	
+	The circuit model certainly seems to dominate the field of quantum computation, but the adiabatic model stands its ground. It has been rigorously proven to be equivalent to the circuit model and has also been realized experimentally in several materials. However, the field still has a lot of growing to do. Not every algorithm that offers a quantum speedup in the circuit model has a parallel AQC algorithm. There are no known problems that can be solved with a quantum speedup using AQC that are not previously known from other models of quantum computing. The scheme also still relies on \textit{a priori} knowledge of the size and/or position of its spectral gap in order to predict an optimal adiabatic schedule for evolution of the Hamiltonian.
+	
+	Even if these shortcomings are not addressed, adiabatic quantum computation offers a potentially more robust form of QC that may not require such extremely controlled conditions as those required by superconducting qubits or spin qubits. This may allow for larger scaling, lower costs, and improved fidelities. As it stands now, there certainly appears to be a bright a future for both theorists and experimentalists in adiabatic quantum computing.
 %===================================================
 
 \begin{comment}
