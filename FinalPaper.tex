@@ -83,14 +83,18 @@
    Most anyone who has studied quantum computation (QC) is familiar with the circuit, or gate, model of QC \cite{Deutsch73}. It closely resembles classical computing in that you start with a given state and then perform a series of gates on your qubits. In the end, the final state is, more or less, the answer that you are looking for. 
 
    There is, however, an entirely different approach to quantum computation that does not employ quantum gates. Adiabatic Quantum Computation (AQC) attempts to solve a computational problem by encoding the solution to the problem in the ground state of some problem Hamiltonian, $H_p$ and adiabatically transitioning from some initial Hamiltonian, $H_0$ to the final Hamiltonian\cite{RevModPhys.90.015002}. 
+	\begin{equation}
+		H(t) = (1-s(t))H_0 + s(t)H_p, 
+		\label{eq:Ht}
+	\end{equation}
 	\begin{center}
-		$H(t) = (1-s(t))H_0 + s(t)H_p $
+		$s(0) = 0, \hspace{1cm} s(T) = 1,$
 	\end{center}
-where 
-	\begin{center}
-		$s(0) = 0, \hspace{1cm} s(T) = 1$
+and $T$ is the total evolution time. The whole system then evolves according to the Schr{\"o}dinger equation
+ 	\begin{center}
+		$i\dfrac{d}{dt}\vert\psi(t)\rangle = H(t)\vert\psi\rangle$.
 	\end{center}
-	   
+	
    The idea is that the initial Hamiltonian is easy to prepare in the ground state while the final Hamiltonian is more difficult. At the end of the adiabatic transition, the system will still be in the ground state barring any disturbances and thus you have the solution to your problem.
    
    Adiabatic quantum computation is considered a rather robust form of quantum computation because the goal is to stay in the ground state, where the system will want to remain anyways as long as excitative interactions are mostly suppressed. However, being a relatively robust form of quantum computation not enough to make a computational method attractive. 
@@ -113,8 +117,62 @@ where
    
    There are a few different constructions of universal AQC based on simulating a quantum circuit that is described by a sequence of $L$ one-qubit or two-qubit unitary gates $U_1 , U_2 , ... U_L$. One such construction is presented here to provide some context. Fermionic ground state quantum computation is a method of AQC that executes an $n$-qubit quantum circuit of depth $L$ by spatially encoding the entire temporal trajectory of the circuit, from input to output, in the ground state of a two-dimensional array of quantum dots[CITE: Mizel, Mitchell, and Cohen 2001]. The system is constructed with $L+1$ columns and $2n$ rows, where the rows correspond to the $\vert 0 \rangle$ and $\vert 1 \rangle$ basis states of the qubit. For each unitary gate, a Hamiltonian term is introduced with off-diagonal terms that represent hopping or tunneling of the electron between neighboring sites and unitary terms that act on the electron's spin. This Hamiltonian is tuned in by a parameter, $s \in [0,1]$, from some initially prepared ground state at $s=0$ when every electron is frozen in place and no tunneling occurs to full realization of all of the quantum gates, $U^{(1)}_{q,l}$, when $s=1$. Universal AQC can also be performed in one dimension using nine-state particles\cite{Aharonov2009}. 
    
-   A much more basic system has recently been used to perform adiabatic quantum factorization of the number 35\cite{Xu2017}. Xu \textit{et al.} demonstrated AQC using a single spin system realized in a nitrogen-vacany (NV) center in diamond. NV centers are attractive as good quantum processors and sensors at room temperature\cite{DOHERTY20131}. 
+   A much more basic system has recently been used to perform adiabatic quantum factorization of the number 35\cite{Xu2017}. Xu \textit{et al.} demonstrated AQC using a single spin system realized in a nitrogen-vacany (NV) center in diamond. NV centers are attractive as good quantum processors and sensors at room temperature\cite{DOHERTY20131}. The problem begins by constructing a multiplication table (Table I) from which we can create a set of equations.
+   
 
+\begin{flushleft}
+TABLE I. Binary multiplication table for $ 5 \times 7 = 35 $. The top row represents the significance of each bit. x and y are the multipliers. $z_{ij}$ is the carry bit from the \textit{i}th bit to the \textit{j}th bit, and the row in the bottom is the number that we want to factor\cite{Xu2017}.
+\begin{tabular}{ p{1.7cm}  p{1cm} p{1cm} p{1cm} p{1cm} p{1cm} p{1cm}} \hline\hline
+ & \textit{$2^5$}  & \textit{$2^4$}  & \textit{$2^3$}
+& \textit{$2^2$}   & \textit{$2^1$} & \textit{$2^0$} \\ \hline
+
+x &\hspace{0.1cm} &\hspace{0.1cm} &\hspace{0.1cm} &1 &p &1 \\ 
+
+y &\hspace{0.1cm} &\hspace{0.1cm} &\hspace{0.1cm} &1 &q &1 \\ 
+
+\hspace{0.1cm} &\hspace{0.1cm} &\hspace{0.1cm} &\hspace{0.1cm} &1 &p &1 \\ 
+
+\hspace{0.1cm} &\hspace{0.1cm} &\hspace{0.1cm} &q  &qp &q &\hspace{0.1cm} \\ 
+
+\hspace{0.1cm} &\hspace{0.1cm} &1 &p  &1 &\hspace{0.1cm} &\hspace{0.1cm} \\ 
+
+Carries &$z_{45}$ &$z_{34}$ &$z_{23}$ &$z_{12}$ &\hspace{0.1cm} &\hspace{0.1cm} \\ 
+
+\hspace{0.1cm} &$z_{35}$ &$z_{24}$ &\hspace{0.1cm}  &\hspace{0.1cm} &\hspace{0.1cm} &\hspace{0.1cm} \\ 
+
+$x \times y = 35$ &1 &0 &0 &0 &1 &1 \\ 
+\hline
+\end{tabular}
+\\
+\end{flushleft}
+
+	The problem Hamiltonian is constructed bitwise by directly mapping the binary variables to operators on qubits\cite{Xu2012}. In this example, we have the general Hamiltonian 
+	$H_p = \left( \hat{p} + \hat{q} -1 -2\hat{z_{12}} \right)^2 $.
+This comes from looking at the second column where $p$ and $q$ sum to 1 and $z_{12}$ is carried. So the equation that we mapped onto the general problem Hamiltonian is $p+q=1+2z_{12}$.
+
+	
+	 Now the problem can be simplified a little more by noting that the variables are binary. This reduces our equation to $p+q=1$, as $z_{12}$ must be equal to 0.	 
+	 
+	  Under this mapping scheme, each operator in the problem Hamiltonian is formed as $\dfrac{I-\hat{\sigma_z}}{2}$ on a qubit representing each variable. Using our simplification and substituting our operators for the pauli operator form, the problem is simplified to solving for the ground state of the Hamiltonian,
+	
+\begin{equation}
+	H_p = \left( \dfrac{I-\sigma_{1,z}}{2} + \dfrac{I-\sigma_{2,z}}{2} - I\right)^2 = \left(S_z + I_z \right)^2 ,
+\end{equation}
+in the $\vert m_s,m_l \rangle$ basis of the NV qubit. The state encodes the solution to the problem as   $\vert p,q \rangle$.
+
+	The initial Hamiltonian, $H_0$, is chosen to be non-commutative with $H_p$ in order to prevent energy level crossings. $H_p$ can be simplified more by dropping the identity operator and scaling it with a constant, $g_1$, in accordance with Xu \textit{et al.}. The two resulting Hamiltonians are
+
+\begin{center}
+	$H_p = g_1\left(2S_zI_z\right), \hspace{1cm} H_0 = g_2\left(S_x + I_x\right) $.
+\end{center}
+
+	The challenge now is to experimentally realize \ref{eq:Ht}. The Hamiltonian of the NV center electron spin coupled with the $^{14}$N nuclear spin is defined as
+	\begin{equation}
+		H = DS_z^2 + \gamma_lB_zS_z + QI_z^2 + \gamma_nB_zI_z + \hat{S}\tilde{A}\hat{I}.
+	\end{equation}
+
+	This Hamiltonian can be transformed into the adiabatic evolution Hamiltonian, \ref{eq:Ht}, by applying radio frequency (RF) and microwave (MW) driving\cite{Kong2016}.
+	
 %===================================================
 
 \begin{comment}
