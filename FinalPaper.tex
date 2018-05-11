@@ -61,7 +61,7 @@
 
 %\preprint{APS/123-QED}
 
-\title{Adiabatic Quantum Computation}% Force line breaks with \\
+\title{An Overview of Adiabatic Quantum Computation \\ Physics 506 Term Paper}% Force line breaks with \\
 
 \author{Adam Mills}
 \email{armills@princeton.edu}
@@ -71,7 +71,7 @@
              %  but any date may be explicitly specified
 
 \begin{abstract}
-[***INSERT ABSTRACT***]
+	The circuit, or gate, model of quantum computation is largely regarded as the ``standard'' model of quantum computation. The circuit model takes an initial state through a prescribed series of unitary operations to some final state. Adiabatic quantum computation attempts to solve a computational problem by evolving the quantum processor from the ground state of some initial Hamiltonian that is simple to some final Hamiltonian that encodes the solution of the original problem in the ground state. The adiabatic method is universal and robust, and as a result has attracted a lot of theoretical and experimental interest. This paper explores some of the basic theory of adiabatic quantum computation and adiabatic algorithms that are known to provide a proven quantum speedup. Following, a specific experimental example of factoring a number is used to provide context for the theory and to present the details of designing and executing an adiabatic algorithm.
 \end{abstract}
 
 \maketitle
@@ -80,9 +80,9 @@
 
 %===================================================
 
-   Most anyone who has studied quantum computation (QC) is familiar with the circuit, or gate, model of QC \cite{Deutsch73}. It closely resembles classical computing in that you start with a given state and then perform a series of gates on your qubits. In the end, the final state is, more or less, the answer that you are looking for. 
+   Most anyone who has studied quantum computation (QC) is familiar with the circuit, or gate, model of QC\cite{Deutsch73}. It is arguable the most intuitive form of quantum computation as it closely resembles classical computing. One starts with a given state and then performs a series of operations on the state in the form of gates according to a prescribed algorithm. In the end, the final state is, more or less, the answer that you are looking for. 
 
-   There is, however, an entirely different approach to quantum computation that does not employ quantum gates. Adiabatic Quantum Computation (AQC) attempts to solve a computational problem by encoding the solution to the problem in the ground state of some problem Hamiltonian, $H_p$ and adiabatically transitioning from some initial Hamiltonian, $H_0$ to the final Hamiltonian\cite{RevModPhys.90.015002}. 
+   There is, however, an entirely different approach to quantum computation that does not employ quantum gates. Adiabatic Quantum Computation (AQC) attempts to solve a computational problem by encoding the solution to the problem in the ground state of some problem Hamiltonian, $H_p$ and adiabatically transitioning from some initial Hamiltonian, $H_0$, to the final Hamiltonian\cite{RevModPhys.90.015002}. 
 	\begin{equation}
 		H(t) = (1-s(t))H_0 + s(t)H_p, 
 		\label{eq:Ht}
@@ -95,13 +95,13 @@ and $T$ is the total evolution time. The whole system then evolves according to 
 		$i\dfrac{d}{dt}\vert\psi(t)\rangle = H(t)\vert\psi\rangle$.
 	\end{center}
 	
-   The idea is that the initial Hamiltonian is easy to prepare in the ground state while the final Hamiltonian is more difficult. At the end of the adiabatic transition, the system will still be in the ground state barring any disturbances and thus you have the solution to your problem.
+   The idea is that the initial Hamiltonian is easy to prepare in the ground state while the final Hamiltonian is more difficult. An adiabatic algorithm slowly evolves the Hamiltonian of the quantum processor from $H_0$ into the problem Hamiltonian, $H_p$. At the end of the adiabatic transition, the system will still be in the ground state barring any disturbances and thus represent the encoded solution to the problem.
    
-   Adiabatic quantum computation is considered a rather robust form of quantum computation because the goal is to stay in the ground state, where the system will want to remain anyways as long as excitative interactions are mostly suppressed. However, being a relatively robust form of quantum computation not enough to make a computational method attractive. 
+   Adiabatic quantum computation is considered a rather robust form of quantum computation because the goal is to stay in the ground state, where the system will want to remain anyways as long as excitative interactions are mostly suppressed. However, being a relatively robust form of quantum computation is not enough to make a computational method attractive. 
    
-   The most important question that has to be answered is whether or not AQC provides a quantum speedup over classical algorithms. A quantum speedup can be classified in several ways\cite{RevModPhys.90.015002}. A ``provable'' quantum speedup is backed by a proof that no classical algorithm can outperform the quantum algorithm. A ``strong'' quantum speedup compares the quantum algorithm to the best classical algorithm, explicitly known or not, but is not backed by any solid proof. A ``quantum speedup'' is a speedup against the best available classical algorithm, but could be superseded by a better classical algorithm. Finally, a ``limited'' quantum speedup is a speedup by comparison to a classical algorithm that uses the same algorithmic approach, but on classical hardware.
+   The most important question that has to be answered is whether or not AQC provides a quantum speedup over classical algorithms. A quantum speedup can be classified in several ways\cite{RevModPhys.90.015002}. To borrow from Albash \textit{et al.}, a ``provable'' quantum speedup is backed by a proof that no classical algorithm can outperform the quantum algorithm. A ``strong'' quantum speedup compares the quantum algorithm to the best classical algorithm, explicitly known or not, but is not backed by any solid proof. A ``quantum speedup'' is a speedup against the best available classical algorithm, but could be superseded by a better classical algorithm. Finally, a ``limited'' quantum speedup is a speedup by comparison to a classical algorithm that uses the same algorithmic approach, but on classical hardware.
    
-   Arguably, the most interesting class of speedups are the provable quantum speedups as they guarantee that the effort put into implementing a reliable quantum algorithm will yield the desired result. For AQC, there are several algorithms that offer a provable quantum speedup, three of which are briefly presented below.
+   Arguably, the most interesting class of speedups are the provable quantum speedups as they guarantee that the effort put into implementing a reliable quantum algorithm will yield an improvement over the classical implementations. For AQC, there are several algorithms that offer a provable quantum speedup, three of which are briefly presented below.
    
    \begin{itemize}
    	\item The adiabatic Grover search algorithm is the AQC parallel of the circuit model Grover search algorithm. The goal of the algorithm is to find a marked item, or multiple marked items, in an unsorted database of \textit{N} items with as few queries to the database as possible. A classical algorithm must query the database until the marked item is found. As a result, the number of queries will scale linearly in \textit{N}. On the other hand, the adiabatic Grover algorithm scales as $\sqrt{N}$ offering a quadratic speedup over classical algorithms.
@@ -193,7 +193,7 @@ which is almost exactly \ref{eq:Ht} using $H_p$ and $H_0$ defined for this probl
 	\begin{figure}
 	\includegraphics[scale=0.49]{Fig2XuEtAl}
 	\caption{	
-		FIG 1. The pulse sequence of the adiabatic factorization process. Under the condition that the external magnetic field is near 510 G aligned with the NV axis, the 532 nm laser pulse initializes both the electron spin and the $^{14}$N nuclear spin. To prepare the initial state to $\Psi_i = \dfrac{1}{2}\left(\vert 0 \rangle - \vert 1 \rangle   \right)\left(\vert 0 \rangle - \vert 1 \rangle   \right)$, RF and MW pulses are applied successively. The above panel shows that the adiabatic evolution can be realized through continuously applying the RF and MW pulses. In the actual experiment, evolution of the state is driven by the optimal control pulse instead. In the lower panel is the optimal control pulse applied on the nuclear spin. (Figure and caption taken from Xu \textit{et al.}\cite{Xu2017})
+		The pulse sequence of the adiabatic factorization process. Under the condition that the external magnetic field is near 510 G aligned with the NV axis, the 532 nm laser pulse initializes both the electron spin and the $^{14}$N nuclear spin. To prepare the initial state to $\Psi_i = \dfrac{1}{2}\left(\vert 0 \rangle - \vert 1 \rangle   \right)\left(\vert 0 \rangle - \vert 1 \rangle   \right)$, RF and MW pulses are applied successively. The above panel shows that the adiabatic evolution can be realized through continuously applying the RF and MW pulses. In the actual experiment, evolution of the state is driven by the optimal control pulse instead. In the lower panel is the optimal control pulse applied on the nuclear spin. (Figure and caption taken from Xu \textit{et al.}\cite{Xu2017})
 	}	
 	\end{figure}
 	\label{fig:pulse}
@@ -203,7 +203,7 @@ which is almost exactly \ref{eq:Ht} using $H_p$ and $H_0$ defined for this probl
 	\begin{figure}
 	\includegraphics[scale=0.49]{Fig3XuEtAl}
 	\caption{	
-		FIG 2. Final state density matrix. (a) The real and (b) the imaginary part of the density matrix. From this final state, we can infer the answer of the factorization is $\left\lbrace p=1, q=0 \right\lbrace$ or $\left\lbrace p=0, q=1 \right\lbrace$ (Figure and caption taken from Xu \textit{et al.}\cite{Xu2017})
+		Final state density matrix. (a) The real and (b) the imaginary part of the density matrix. The vertical axis shows probability while the basis of the density matrix is shown by the horizontal axes. From this final state, we can infer the answer of the factorization is $\left\lbrace p=1, q=0 \right\rbrace$ or $\left\lbrace p=0, q=1 \right\rbrace$ (Figure taken from Xu \textit{et al.}\cite{Xu2017})
 	}	
 	\end{figure}
 	\label{fig:densitymatrix}
@@ -214,7 +214,7 @@ which is almost exactly \ref{eq:Ht} using $H_p$ and $H_0$ defined for this probl
 	
 	The circuit model certainly seems to dominate the field of quantum computation, but the adiabatic model stands its ground. It has been rigorously proven to be equivalent to the circuit model and has also been realized experimentally in several materials. However, the field still has a lot of growing to do. Not every algorithm that offers a quantum speedup in the circuit model has a parallel AQC algorithm. There are no known problems that can be solved with a quantum speedup using AQC that are not previously known from other models of quantum computing. The scheme also still relies on \textit{a priori} knowledge of the size and/or position of its spectral gap in order to predict an optimal adiabatic schedule for evolution of the Hamiltonian.
 	
-	Even if these shortcomings are not addressed, adiabatic quantum computation offers a potentially more robust form of QC that may not require such extremely controlled conditions as those required by superconducting qubits or spin qubits. This may allow for larger scaling, lower costs, and improved fidelities. As it stands now, there certainly appears to be a bright a future for both theorists and experimentalists in adiabatic quantum computing.
+	Even if with these shortcomings, adiabatic quantum computation offers a potentially more robust form of QC for certain problems that does not require such extremely controlled conditions as those required by superconducting qubits or spin qubits. This may allow for larger scaling, lower costs, and improved fidelities. As it stands now, there certainly appears to be a bright a future for both theorists and experimentalists in adiabatic quantum computing.
 %===================================================
 
 \begin{comment}
