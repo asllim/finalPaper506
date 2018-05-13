@@ -61,7 +61,7 @@
 
 %\preprint{APS/123-QED}
 
-\title{An Overview of Adiabatic Quantum Computation \\ Physics 506 Term Paper}% Force line breaks with \\
+\title{Adiabatic Quantum Computation \\ Physics 506 Term Paper}% Force line breaks with \\
 
 \author{Adam Mills}
 \email{armills@princeton.edu}
@@ -71,7 +71,7 @@
              %  but any date may be explicitly specified
 
 \begin{abstract}
-	The circuit, or gate, model of quantum computation is largely regarded as the ``standard'' model of quantum computation. The circuit model evolves the Hilbert space as it operates on an initial state via a prescribed series of unitary operations. This series of unitary operations is analogous to the logical gate operations performed in a classical computer. Adiabatic quantum computation attempts to solve a computational problem by evolving the quantum processor from the ground state of some initial Hamiltonian that is simple to some final Hamiltonian that encodes the solution of the original problem in the ground state. The adiabatic method is universal and robust, and as a result has attracted a lot of theoretical and experimental interest. This paper explores some of the basic theory of adiabatic quantum computation and adiabatic algorithms that are known to provide a proven quantum speedup. Following, a specific experimental example of factoring a number is used to provide some context for the theory. This example will explore the details of constructing the problem Hamiltonian, executing the evolution, and interpreting the final state of the system as the solution to the problem.
+	The circuit, or gate, model of quantum computation is largely regarded as the ``standard'' model of quantum computation. The circuit model evolves the Hilbert space as it operates on an initial state via a prescribed series of unitary operations. This series of unitary operations is analogous to the logical gate operations performed in a classical computer. Adiabatic quantum computation attempts to solve a computational problem by evolving the quantum processor from the ground state of some initial Hamiltonian that is simple to some final Hamiltonian that encodes the solution of the original problem in the ground state. The adiabatic method is universal and robust, and as a result has attracted a lot of theoretical and experimental interest. This paper explores some of the basic theory of adiabatic quantum computation and adiabatic algorithms that are known to provide a proven quantum speedup. Following, a specific experimental example of factoring a number is used to provide some context for the theory.
 \end{abstract}
 
 \maketitle
@@ -82,7 +82,7 @@
 
 \section{Introduction}
 
-   Most anyone who has studied quantum computation (QC) is familiar with the circuit, or gate, model of QC\cite{Deutsch73}. It considered the ``standard'' model of QC and is arguably the most intuitive form of quantum computation as it closely resembles classical computing. One starts with a given state and then performs a series of operations on the state in the form of gates according to a prescribed algorithm. In the end, the final state is, more or less, the answer that you are looking for. 
+   Most anyone who has studied quantum computation (QC) is familiar with the circuit, or gate, model of QC\cite{Deutsch73}. It considered the ``standard'' model of QC and is arguably the most intuitive form of quantum computation as it closely resembles classical computing. One starts with the qubits of the quantum processor in a given state and then performs a series of unitary operations on them in the form of gates according to a prescribed algorithm. In the end, the final state of the processor encodes the solution to the problem. 
 
    There is, however, an entirely different approach to quantum computation that does not employ quantum gates. Adiabatic Quantum Computation (AQC) attempts to solve a computational problem by encoding the solution to the problem in the ground state of some problem Hamiltonian, $H_p$, and adiabatically transitioning to this Hamiltonian from some initial Hamiltonian, $H_0$\cite{RevModPhys.90.015002}. Thus, we have a time-dependent Hamiltonian that performs a smooth interpolation between $H_0$ and $H_p$ of the form 
 	\begin{equation}
@@ -100,13 +100,13 @@ and $T$ is the total evolution time. The whole system then evolves according to 
 	
    The idea is that the initial Hamiltonian is easy to prepare in the ground state while the final Hamiltonian is more difficult. As the adiabatic algorithm slowly evolves the Hamiltonian of the quantum processor from $H_0$ into the problem Hamiltonian, $H_p$, the adiabatic theorem guarantees that at the end of the transition the system will still be in the ground state barring any disturbances. Thus, the final state will represent the encoded solution to the problem. 
 
-   In this overview of AQC, I discuss why an adiabatic approach is necessary to guarantee that the final state is the ground state of the problem Hamiltonian followed by a discussion on how robust AQC is. Subsequently, I present several adiabatic algorithms and then discuss an important relation in quantum computation. I finish the paper with a specific experimental example of adiabatic quantum computation being used to factor a number and state a few prospects for future work in AQC.
+   In this overview of AQC, I discuss some of the theory behind adiabatic quantum computation in Section~\ref{sec:A} before presenting several adiabatic algorithms. I then present a specific experimental example in Section~\ref{sec:B} where AQC is used to factor a number. The paper concludes with a short term outlook for AQC.
    
-   \section{Theoretical Discussion}\label{sec:A}
+   \section{Adiabatic Computation}\label{sec:A}
    
-   It is reasonable to ask why one would not just prepare the final Hamiltonian in a cold environment and wait for thermal relaxation to bring the system down to the ground state. The problem with this approach is that some hard optimization problems pose a more complex solution space that contain local minima. In such cases, the computer may get stuck in these states from which downward transitions are unlikely, causing equilibration time to grow exponentially large in the number of bits being used to run the algorithm.
+   This section examines the appeal of using adiabatic transitions to perform computation as well as some of the known adiabatic algorithms. It is reasonable to ask why one would not just prepare the final Hamiltonian in a cold environment and wait for thermal relaxation to bring the system down to the ground state. The problem with this approach is that some hard optimization problems pose a more complex solution space that contain local minima. In such cases, the computer may get stuck in these states from which downward transitions are unlikely, causing equilibration time to grow exponentially large in the number of bits being used to run the algorithm.
    
-   Adiabatic quantum computation is a rather robust form of QC against the typical problems that plague the gate model. The circuit model relies on actively controlling the qubits from one step to the next and has to fight and correct for dephasing, decoherence, and unitary control errors along the way. In AQC, the phase of the ground state does not influence the results of the algorithm, so dephasing in the energy eigenbasis has no impact. The adiabatic method is also only efficient if the minimum energy gap is reasonably large, so the method is robust against decoherence under typical operational conditions\cite{Childs2001}. AQC does not rely on performing unitary gates throughout the algorithm, but it is susceptible to errors in implementing the time-dependent Hamiltonian, $H(t) + K(t)$. Childs \textit{et al.} showed that this error in the implementation, $K(t)$, can actually be reasonably large as long as it is slowly varying and has small initial and final values. It is also true that $K(t)$ can rapidly fluctuate as long as the characteristic frequency of the fluctuations is large compared to the energy scale of $H(t)$.
+   Adiabatic quantum computation is a rather robust form of QC against the typical problems that plague the gate model, in part due to these potentially hard to make transitions, i.e., decohering. The circuit model relies on actively controlling the qubits from one step to the next and has to fight and correct for dephasing, decoherence, and unitary control errors along the way. In AQC, the phase of the ground state does not influence the results of the algorithm, so dephasing in the energy eigenbasis has no impact. The adiabatic method is also only efficient if the minimum energy gap is reasonably large, so the method is robust against decoherence under typical operational conditions\cite{Childs2001}. AQC does not rely on performing unitary gates throughout the algorithm, but it is susceptible to errors in implementing the time-dependent Hamiltonian, $H(t) + K(t)$. Childs \textit{et al.} showed that this error in the implementation, $K(t)$, can actually be reasonably large as long as it is slowly varying and has small initial and final values. It is also true that $K(t)$ can rapidly fluctuate as long as the characteristic frequency of the fluctuations is large compared to the energy scale of $H(t)$.
    
    The robustness of AQC is attractive, but the most important question that has to be answered is whether or not AQC provides a quantum speedup over classical algorithms. A quantum speedup can be classified in several ways\cite{RevModPhys.90.015002}. To borrow from Albash \textit{et al.}, a ``provable'' quantum speedup is backed by a proof that no classical algorithm can outperform the quantum algorithm. A ``strong'' quantum speedup compares the quantum algorithm to the best classical algorithm, explicitly known or not, but is not backed by any solid proof. A ``quantum speedup'' is a speedup against the best available classical algorithm, but could be superseded by a better classical algorithm. Finally, a ``limited'' quantum speedup is a speedup by comparison to a classical algorithm that uses the same algorithmic approach, but on classical hardware.
    
@@ -115,7 +115,7 @@ and $T$ is the total evolution time. The whole system then evolves according to 
    \begin{itemize}
    	\item The adiabatic Grover search algorithm is the AQC parallel of the circuit model Grover search algorithm. The goal of the algorithm is to find a marked item, or multiple marked items, in an unsorted database of \textit{N} items with as few queries to the database as possible. A classical algorithm must query the database until the marked item is found. As a result, the number of queries will scale linearly in \textit{N}. On the other hand, the adiabatic Grover algorithm scales as $\sqrt{N}$ offering a quadratic speedup over classical algorithms.
    \item The adiabatic Deutsch-Jozsa algorithm is another AQC parallel of an existing circuit model algorithm. The Deutsch-Jozsa problem is to determine whether or not a function, $f: \lbrace0,1\rbrace^n \longmapsto \lbrace0,1\rbrace$, is balanced or constant using as few calls to the function as possible. Classical algorithms require $2^{n-1} + 1$ queries to $f$ in the worst case since a balanced function could return a constant answer for the first $2^{n-1}$ queries. Just like the quantum circuit model Deutsch-Jozsa algorithm, the adiabatic run time is $O(1)$.
-   \item The adiabatic Bernstein-Vazirani algorithm solves the problem of locating an unknown binary string $ a \in \lbrace0,1\rbrace^n  $ with as few queries to the oracle as possible. (Refer to Nielsen and Chuang, Ch. 5, for a discussion on oracles). The circuit model and adiabatic model both offer a solution that runs with $O(1)$ queries. Both offering a polynomial quantum speedup over classical algorithms that require $n$ queries.
+   \item The adiabatic Bernstein-Vazirani algorithm solves the problem of locating an unknown binary string $ a \in \lbrace0,1\rbrace^n  $ with as few queries to the oracle as possible. The circuit model and adiabatic model both offer a solution that runs with $O(1)$ queries. Both offering a polynomial quantum speedup over classical algorithms that require $n$ queries.
    \end{itemize}
    
    These three examples illuminate an important relation between the two different quantum computation methods. Each adiabatic algorithm had a quantum circuit model counterpart that scaled the same way. Although three examples is nothing to draw a definitive conclusion from, it is no coincidence that this correlation exists. In fact, adiabatic quantum computation is proven to be equivalent, up to polynomial overhead, to the circuit model and thus universal\cite{Aharanov2007}. 
@@ -128,7 +128,7 @@ and $T$ is the total evolution time. The whole system then evolves according to 
    
    \section{Experimental Discussion}\label{sec:B}
    
-   A much more basic system than the previously mentioned 2-dimensional array has recently been used to perform adiabatic quantum factorization of the number 35\cite{Xu2017}. Xu \textit{et al.} demonstrated AQC using a single spin system realized in a nitrogen-vacancy (NV) center in diamond. NV centers are attractive as good quantum processors and sensors at room temperature\cite{DOHERTY20131}. They have long coherence times, allow for fast resonant spin manipulation, and are easy to initialize and read-out using laser illumination. In this example, solving the problem begins by constructing a multiplication table, for example Table~\ref{tab:binmult}, from which one can create a set of equations that will be mapped onto the problem Hamiltonian.
+   This section details an experimental realization of an adiabatic factoring algorithm. A much more basic system than the previously mentioned 2-dimensional array has recently been used to factorize the number 35\cite{Xu2017}. Xu \textit{et al.} demonstrated AQC using a single spin system realized in a nitrogen-vacancy (NV) center in diamond. NV centers are attractive as good quantum processors and sensors at room temperature\cite{DOHERTY20131}. They have long coherence times, allow for fast resonant spin manipulation, and are easy to initialize and read-out using laser illumination. In this example, solving the problem begins by constructing a multiplication table, for example Table~\ref{tab:binmult}, from which one can create a set of equations that will be mapped onto the problem Hamiltonian.
    
    The problem Hamiltonian is constructed bitwise by directly mapping the binary variables to operators on qubits\cite{Xu2012}. In this example, we have the general Hamiltonian 
 	\begin{equation}	
@@ -165,6 +165,20 @@ $x \times y = 35$ &1 &0 &0 &0 &1 &1 \\
 \label{tab:binmult}
 \end{table}
 
+	
+	\begin{figure}[h]
+	%% try any of the variations to take more control of the figure placement
+	% h = here
+	% \begin{figure}[h] 
+	% H = HERE
+	% \begin{figure}[H]
+	\includegraphics[scale=0.49]{Fig2XuEtAl}
+	\caption{	
+		The pulse sequence of the adiabatic factorization process. Under the condition that the external magnetic field is near 510 G aligned with the NV axis, the 532 nm laser pulse initializes both the electron spin and the $^{14}$N nuclear spin. To prepare the initial state to $\Psi_i = \dfrac{1}{2}\left(\vert 0 \rangle - \vert 1 \rangle   \right)\left(\vert 0 \rangle - \vert 1 \rangle   \right)$, RF and MW pulses are applied successively. The above panel shows that the adiabatic evolution can be realized through continuously applying the RF and MW pulses. In the actual experiment, evolution of the state is driven by the optimal control pulse instead. In the lower panel is the optimal control pulse applied on the nuclear spin. (Figure and caption taken from Xu \textit{et al.}\cite{Xu2017})
+	}
+	\label{fig:pulse}
+	\end{figure}
+
 
 	 Now the problem can be simplified a little more by noting that the variables are binary. This reduces the equation to $p+q=1$, as $z_{12}$ must be equal to 0.	 
 	 
@@ -185,12 +199,12 @@ in the $\vert m_s,m_l \rangle$ basis of the NV qubit. The state encodes the solu
 	H_p = g_1\left(2S_zI_z\right), \hspace{1cm} H_0 = g_2\left(S_x + I_x\right) .
 \end{equation}
 
-	The challenge now is to experimentally realize Eq. \ref{eq:Ht}. The Hamiltonian of the NV center electron spin coupled with the $^{14}$N nuclear spin is defined as
+	The challenge now is to experimentally realize Eq.~\ref{eq:Ht}. The Hamiltonian of the NV center electron spin coupled with the $^{14}$N nuclear spin is defined as
 	\begin{equation}
 		H = DS_z^2 + \gamma_lB_zS_z + QI_z^2 + \gamma_nB_zI_z + \hat{S}\tilde{A}\hat{I}.
 	\end{equation}
 
-	This Hamiltonian can be transformed into the adiabatic evolution Hamiltonian, Eq. \ref{eq:Ht}, by applying radio frequency (RF) and microwave (MW) driving\cite{Kong2016}. Using the same notation as Xu \textit{et al.}, the system Hamiltonian under rf and MW driving is
+	This Hamiltonian can be transformed into the adiabatic evolution Hamiltonian, Eq.~\ref{eq:Ht}, by applying radio frequency (RF) and microwave (MW) driving\cite{Kong2016}. Using the same notation as Xu \textit{et al.}, the system Hamiltonian under rf and MW driving is
 	\begin{equation}
 	\begin{split}
 		H^{rot}_{NV} = \left( \delta_{MW} + \delta_{RF} \right)\hat{I} + \Omega_{MW}2S_xI_z \\ - \delta_{RF}I_z + \Omega_{RF}I_x - \delta_{MW}S_z.
@@ -198,34 +212,18 @@ in the $\vert m_s,m_l \rangle$ basis of the NV qubit. The state encodes the solu
 	\label{eq:rotNV}
 	\end{equation}
 	
-	In this system Hamiltonian, $\Omega_{MW}$ and $\Omega_{RF}$ are the Rabi frequencies while $\delta_{MW}$ and $\delta_{RF}$ are the detunings. Now set $\delta_{RF}=0$, $\Omega_{MW}\equiv s(t)g_1$, $\Omega_{RF}=-\delta_{MW}\equiv \left(1-s(t)\right)g_2$, and drop the identity operator. Eq. \ref{eq:rotNV} becomes
+	In this system Hamiltonian, $\Omega_{MW}$ and $\Omega_{RF}$ are the Rabi frequencies while $\delta_{MW}$ and $\delta_{RF}$ are the detunings. Now set $\delta_{RF}=0$, $\Omega_{MW}\equiv s(t)g_1$, $\Omega_{RF}=-\delta_{MW}\equiv \left(1-s(t)\right)g_2$, and drop the identity operator. Eq.~\ref{eq:rotNV} becomes
 	\begin{equation}
 		H^{rot}_{NV} = s(t)g_12S_xI_z + \left(1-s(t)\right)g_2\left(I_x + S_z\right)
 	\end{equation}
-which is almost exactly Eq.~\ref{eq:Ht} (\textbf{Note I used the tilde in the equation ref here}) using $H_p$ and $H_0$ defined for this problem. In order to complete the transformation, apply a Hadamard gate on the electron spin subspace which exchanges $S_x$ and $S_z$ and we get the Hamiltonian in the desired form
+which is almost exactly Eq.~\ref{eq:Ht} using $H_p$ and $H_0$ defined for this problem. In order to complete the transformation, apply a Hadamard gate on the electron spin subspace which exchanges $S_x$ and $S_z$ and we get the Hamiltonian in the desired form
 	\begin{equation}
 		H^{rot}_{NV} = s(t)g_12S_zI_z + \left(1-s(t)\right)g_2\left(I_x + S_x\right).
-	\end{equation}
+	\end{equation}	
 	
+	An overview of the procedure is shown in Fig.~\ref{fig:pulse}. The NV electron spin and the nitrogen nuclear spin are polarized at the same time by applying a laser pulse at 532 nm. Then MW and RF $-\pi_y/2$ pulses ($\pi/2$ rotations about the $-y$ axis) are applied to prepare the initial state $\Psi_i = \dfrac{1}{2}\left(\vert 0 \rangle - \vert 1 \rangle   \right)\left(\vert 0 \rangle - \vert 1 \rangle   \right)$. The adiabatic process is then approximated by shaped pulses and finally tomography is performed to measure the population distribution. 
 
-	\begin{figure}
-	%% try any of the variations to take more control of the figure placement
-	% h = here
-	% \begin{figure}[h] 
-	% H = HERE
-	% \begin{figure}[H]
-	\includegraphics[scale=0.49]{Fig2XuEtAl}
-	\caption{	
-		The pulse sequence of the adiabatic factorization process. Under the condition that the external magnetic field is near 510 G aligned with the NV axis, the 532 nm laser pulse initializes both the electron spin and the $^{14}$N nuclear spin. To prepare the initial state to $\Psi_i = \dfrac{1}{2}\left(\vert 0 \rangle - \vert 1 \rangle   \right)\left(\vert 0 \rangle - \vert 1 \rangle   \right)$, RF and MW pulses are applied successively. The above panel shows that the adiabatic evolution can be realized through continuously applying the RF and MW pulses. In the actual experiment, evolution of the state is driven by the optimal control pulse instead. In the lower panel is the optimal control pulse applied on the nuclear spin. (Figure and caption taken from Xu \textit{et al.}\cite{Xu2017})
-	}
-	\label{fig:pulse}
-	\end{figure}	
-	
-	Up until this point the discussion has remained largely theoretical. If we are able to map our problem onto a Hamiltonian, find an initial Hamiltonian that does not commute with $H_p$, perform the adiabatic transformation, and finally read out the final state reliably we have solved our computational problem using AQC. Let us now delve into the details of the experiment performed by Xu \textit{et al.} enough to explore how this is realized in the lab and what the results look like. 
-	
-	An overview of the procedure is shown in Fig. \ref{fig:pulse}. The NV electron spin and the nitrogen nuclear spin are polarized at the same time by applying a laser pulse at 532 nm. Then MW and RF $-\pi_y/2$ pulses ($\pi/2$ rotations about the $-y$ axis) are applied to prepare the initial state $\Psi_i = \dfrac{1}{2}\left(\vert 0 \rangle - \vert 1 \rangle   \right)\left(\vert 0 \rangle - \vert 1 \rangle   \right)$. The adiabatic process is then approximated by shaped pulses and finally tomography is performed to measure the population distribution. 
-
-	The results of the experiment are shown in Fig. \ref{fig:densitymatrix} as the final state density matrix. The concentration in the middle shows that the final state is most likely $\Psi_i = \dfrac{1}{\sqrt{2}}\left(\vert 01 \rangle + \vert 10 \rangle   \right)$. From this, we can extract the values of $p$ and $q$ by recalling the final state vector will be of the form $\vert pq \rangle$. The factoring problem that we were trying to solve was to find $1p1$ and $1q1$ in binary, as these are the prime factors of 35. Therefore, the algorithm yields the binary numbers $101$ and $111$ as the two prime factors which are 5 and 7 in decimal.
+	The results of the experiment are shown in Fig.~\ref{fig:densitymatrix} as the final state density matrix. The concentration in the middle shows that the final state is most likely $\Psi_i = \dfrac{1}{\sqrt{2}}\left(\vert 01 \rangle + \vert 10 \rangle   \right)$. From this, we can extract the values of $p$ and $q$ by recalling the final state vector will be of the form $\vert pq \rangle$. The factoring problem that we were trying to solve was to find $1p1$ and $1q1$ in binary, as these are the prime factors of 35. Therefore, the algorithm yields the binary numbers $101$ and $111$ as the two prime factors which are 5 and 7 in decimal.
 	
 	\begin{figure}
 	\includegraphics[scale=0.49]{Fig3XuEtAl}
@@ -242,7 +240,7 @@ which is almost exactly Eq.~\ref{eq:Ht} (\textbf{Note I used the tilde in the eq
 		
 	The circuit model certainly seems to dominate the field of quantum computation, but the adiabatic model stands its ground. It has been rigorously proven to be equivalent to the circuit model and has also been realized experimentally in a variety of host materials. However, the field still has a lot of growing to do. Not every algorithm that offers a quantum speedup in the circuit model has a parallel AQC algorithm. There are also no known problems that can be solved with a quantum speedup using AQC that are not previously known from other models of quantum computing. The scheme also still relies on \textit{a priori} knowledge of the size and/or position of its spectral gap in order to predict an optimal adiabatic schedule for evolution of the Hamiltonian.	
 
-	Even if with these shortcomings, adiabatic quantum computation offers a potentially more robust form of QC that does not require such extremely controlled conditions as those required by superconducting qubits or spin qubits. This may allow for larger scaling, lower costs, and improved fidelities. This only applies for the subset of problems with known adiabatic algorithms. There certainly appears to be a bright a future for theorists working to fill in the algorithmic gaps of AQC. As mentioned before, every circuit model algorithm has an adiabatic counterpart in principle. As is always the case in quantum computing, experimentalists have their work cut out for them in implementing currently known algorithms, improving upon fidelities, and constructing systems that can perform arbitrary computations.
+	Even if with these shortcomings, adiabatic quantum computation offers a potentially more robust form of QC that does not require such extremely controlled conditions as those required by superconducting qubits or spin qubits. This may allow for larger scaling, lower costs, and improved fidelities. As these benefits only apply for the subset of problems with known adiabatic algorithms, there certainly appears to be a bright a future for theorists working to fill in the algorithmic gaps of AQC. Experimentalists have their work cut out for them in implementing currently known algorithms, improving upon fidelities, and constructing systems that can perform arbitrary computations.
 %===================================================
 
 
