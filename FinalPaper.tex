@@ -100,7 +100,9 @@ and $T$ is the total evolution time. The whole system then evolves according to 
 	
    The idea is that the initial Hamiltonian is easy to prepare in the ground state while the final Hamiltonian is more difficult. As the adiabatic algorithm slowly evolves the Hamiltonian of the quantum processor from $H_0$ into the problem Hamiltonian, $H_p$, the adiabatic theorem guarantees that at the end of the transition the system will still be in the ground state barring any disturbances. Thus, the final state will represent the encoded solution to the problem. 
 
-   \textbf{To fill in the final paragraph of the intro you could write something that highlights the structure of the paper. For eample: In Section~\ref{sec:A}, we state blah blah.. and so forth}
+   In this overview of AQC, I discuss why an adiabatic approach is necessary to guarantee that the final state is the ground state of the problem Hamiltonian followed by a discussion on how robust AQC is. Subsequently, I present several adiabatic algorithms and then discuss an important relation in quantum computation. I finish the paper with a specific experimental example of adiabatic quantum computation being used to factor a number and state a few prospects for future work in AQC.
+   
+   \section{Theoretical Discussion}\label{sec:A}
    
    It is reasonable to ask why one would not just prepare the final Hamiltonian in a cold environment and wait for thermal relaxation to bring the system down to the ground state. The problem with this approach is that some hard optimization problems pose a more complex solution space that contain local minima. In such cases, the computer may get stuck in these states from which downward transitions are unlikely, causing equilibration time to grow exponentially large in the number of bits being used to run the algorithm.
    
@@ -120,15 +122,13 @@ and $T$ is the total evolution time. The whole system then evolves according to 
    
    The equivalence between the AQC and gate model QC can be stated more formally borrowing a definition from Albash \textit{et al.}: ``A time-dependent Hamiltonian $H(t), t\in [0,t_{f}]$ is universal for AQC if, given an arbitrary quantum circuit $U$ operating on an arbitrary initial state $\vert\psi\rangle$ of $n$ p-state particles and having depth $L$, the ground state of $H(t_f)$ is equal to $U\vert\psi\rangle$ with probability greater than $\epsilon>0$, the number of particles $H(t)$ operates on is $poly(n) \forall t$, and $t_f = poly(n,L)$.\cite{RevModPhys.90.015002}''
 
-   \section{Section}\label{sec:A}
    This definition stipulates that the final state of the circuit, $U\vert\psi\rangle$, is equal to the final ground state of $H(t)$, ensuring that the circuit model and adiabatic model of computation have the same output. It is important to note that as a result of their equivalence, quantum circuits can simulate adiabatic computations\cite{Farhi2000} and vice versa\cite{Aharanov2007}.
-   
-   \subsection{Subsection}
- 	\textbf{This is how to do a subsection if you want}
    
    There are a few different constructions of universal AQC based on simulating a quantum circuit that is described by a sequence of $L$ one-qubit or two-qubit unitary gates $U_1 , U_2 , ... U_L$. One such construction is presented here to provide some context. Fermionic ground state quantum computation is a method of AQC that executes an $n$-qubit quantum circuit of depth $L$ by spatially encoding the entire temporal trajectory of the circuit, from input to output, in the ground state of a two-dimensional array of quantum dots\cite{Mizel2001}. The system is constructed with $L+1$ columns and $2n$ rows, where the rows correspond to the $\vert 0 \rangle$ and $\vert 1 \rangle$ basis states of the qubit. For each unitary gate, a Hamiltonian term is introduced with off-diagonal terms that represent hopping or tunneling of the electron between neighboring sites and unitary terms that act on the electron's spin. This Hamiltonian is tuned in by a parameter, $s \in [0,1]$, from some initially prepared ground state at $s=0$ when every electron is frozen in place and no tunneling occurs to full realization of all of the quantum gates, $U^{(1)}_{q,l}$, when $s=1$.
    
-   A much more basic system than this 2-dimensional array has recently been used to perform adiabatic quantum factorization of the number 35\cite{Xu2017}. Xu \textit{et al.} demonstrated AQC using a single spin system realized in a nitrogen-vacancy (NV) center in diamond. NV centers are attractive as good quantum processors and sensors at room temperature\cite{DOHERTY20131}. They have long coherence times, allow for fast resonant spin manipulation, and are easy to initialize and read-out using laser illumination. In this example, solving the problem begins by constructing a multiplication table, for example Table~\ref{tab:binmult}, from which one can create a set of equations that will be mapped onto the problem Hamiltonian.
+   \section{Experimental Discussion}\label{sec:B}
+   
+   A much more basic system than the previously mentioned 2-dimensional array has recently been used to perform adiabatic quantum factorization of the number 35\cite{Xu2017}. Xu \textit{et al.} demonstrated AQC using a single spin system realized in a nitrogen-vacancy (NV) center in diamond. NV centers are attractive as good quantum processors and sensors at room temperature\cite{DOHERTY20131}. They have long coherence times, allow for fast resonant spin manipulation, and are easy to initialize and read-out using laser illumination. In this example, solving the problem begins by constructing a multiplication table, for example Table~\ref{tab:binmult}, from which one can create a set of equations that will be mapped onto the problem Hamiltonian.
    
    The problem Hamiltonian is constructed bitwise by directly mapping the binary variables to operators on qubits\cite{Xu2012}. In this example, we have the general Hamiltonian 
 	\begin{equation}	
@@ -136,7 +136,7 @@ and $T$ is the total evolution time. The whole system then evolves according to 
 	\end{equation}
 This comes from looking at the second column where $p$ and $q$ sum to 1 and $z_{12}$ is carried. So the equation that is mapped onto the general problem Hamiltonian is $p+q=1+2z_{12}$.
 
-\begin{table}
+\begin{table}[h]
 \begin{flushleft}
 \begin{tabular}{ p{1.7cm}  p{1cm} p{1cm} p{1cm} p{1cm} p{1cm} p{1cm}} \hline\hline
  & \textit{$2^5$}  & \textit{$2^4$}  & \textit{$2^3$}
@@ -238,29 +238,12 @@ which is almost exactly Eq.~\ref{eq:Ht} (\textbf{Note I used the tilde in the eq
 	
 	This experiment exhibits the potential power of adiabatic quantum computing. Using a single qubit, the number 35 was factorized with a fidelity of about \%81 \cite{Xu2017}. The mapping scheme used to create the problem Hamiltonian scales to multiple qubits and could thus be leveraged to factor larger numbers.
 	
-	The circuit model certainly seems to dominate the field of quantum computation, but the adiabatic model stands its ground. It has been rigorously proven to be equivalent to the circuit model and has also been realized experimentally in a variety of host materials. However, the field still has a lot of growing to do. Not every algorithm that offers a quantum speedup in the circuit model has a parallel AQC algorithm. There are also no known problems that can be solved with a quantum speedup using AQC that are not previously known from other models of quantum computing. The scheme also still relies on \textit{a priori} knowledge of the size and/or position of its spectral gap in order to predict an optimal adiabatic schedule for evolution of the Hamiltonian.
-	
 	\section{Conclusion}
+		
+	The circuit model certainly seems to dominate the field of quantum computation, but the adiabatic model stands its ground. It has been rigorously proven to be equivalent to the circuit model and has also been realized experimentally in a variety of host materials. However, the field still has a lot of growing to do. Not every algorithm that offers a quantum speedup in the circuit model has a parallel AQC algorithm. There are also no known problems that can be solved with a quantum speedup using AQC that are not previously known from other models of quantum computing. The scheme also still relies on \textit{a priori} knowledge of the size and/or position of its spectral gap in order to predict an optimal adiabatic schedule for evolution of the Hamiltonian.	
+
 	Even if with these shortcomings, adiabatic quantum computation offers a potentially more robust form of QC that does not require such extremely controlled conditions as those required by superconducting qubits or spin qubits. This may allow for larger scaling, lower costs, and improved fidelities. This only applies for the subset of problems with known adiabatic algorithms. There certainly appears to be a bright a future for theorists working to fill in the algorithmic gaps of AQC. As mentioned before, every circuit model algorithm has an adiabatic counterpart in principle. As is always the case in quantum computing, experimentalists have their work cut out for them in implementing currently known algorithms, improving upon fidelities, and constructing systems that can perform arbitrary computations.
 %===================================================
-
-\begin{comment}
-
-% Below are examples of the syntax used to generate titles
-
-\section{\label{sec:level1}First-level heading}
-
-\subsection{\label{sec:level2}Second-level heading: Formatting}
-
-\subsubsection{Wide text (A level-3 head)}
-
-\subsection{\label{sec:citeref}Citations and References}
-
-\subsubsection{Citations}
-
-\paragraph{Syntax}
-
-\end{comment}
 
 
 \nocite{*} % Attaches all citations to end, regardless of whether or not they were used in text
