@@ -45,7 +45,7 @@
 \usepackage{bm}% bold math
 \usepackage{comment}
 \usepackage{amsmath}
-%\usepackage{hyperref}% add hypertext capabilities
+\usepackage[hidelinks]{hyperref}% add hypertext capabilities
 %\usepackage[mathlines]{lineno}% Enable numbering of text and display math
 %\linenumbers\relax % Commence numbering lines
 
@@ -80,6 +80,8 @@
 
 %===================================================
 
+\section{Introduction}
+
    Most anyone who has studied quantum computation (QC) is familiar with the circuit, or gate, model of QC\cite{Deutsch73}. It considered the ``standard'' model of QC and is arguably the most intuitive form of quantum computation as it closely resembles classical computing. One starts with a given state and then performs a series of operations on the state in the form of gates according to a prescribed algorithm. In the end, the final state is, more or less, the answer that you are looking for. 
 
    There is, however, an entirely different approach to quantum computation that does not employ quantum gates. Adiabatic Quantum Computation (AQC) attempts to solve a computational problem by encoding the solution to the problem in the ground state of some problem Hamiltonian, $H_p$, and adiabatically transitioning to this Hamiltonian from some initial Hamiltonian, $H_0$\cite{RevModPhys.90.015002}. Thus, we have a time-dependent Hamiltonian that performs a smooth interpolation between $H_0$ and $H_p$ of the form 
@@ -97,6 +99,8 @@ and $T$ is the total evolution time. The whole system then evolves according to 
 	\end{center}
 	
    The idea is that the initial Hamiltonian is easy to prepare in the ground state while the final Hamiltonian is more difficult. As the adiabatic algorithm slowly evolves the Hamiltonian of the quantum processor from $H_0$ into the problem Hamiltonian, $H_p$, the adiabatic theorem guarantees that at the end of the transition the system will still be in the ground state barring any disturbances. Thus, the final state will represent the encoded solution to the problem. 
+
+   \textbf{To fill in the final paragraph of the intro you could write something that highlights the structure of the paper. For eample: In Section~\ref{sec:A}, we state blah blah.. and so forth}
    
    It is reasonable to ask why one would not just prepare the final Hamiltonian in a cold environment and wait for thermal relaxation to bring the system down to the ground state. The problem with this approach is that some hard optimization problems pose a more complex solution space that contain local minima. In such cases, the computer may get stuck in these states from which downward transitions are unlikely, causing equilibration time to grow exponentially large in the number of bits being used to run the algorithm.
    
@@ -115,12 +119,16 @@ and $T$ is the total evolution time. The whole system then evolves according to 
    These three examples illuminate an important relation between the two different quantum computation methods. Each adiabatic algorithm had a quantum circuit model counterpart that scaled the same way. Although three examples is nothing to draw a definitive conclusion from, it is no coincidence that this correlation exists. In fact, adiabatic quantum computation is proven to be equivalent, up to polynomial overhead, to the circuit model and thus universal\cite{Aharanov2007}. 
    
    The equivalence between the AQC and gate model QC can be stated more formally borrowing a definition from Albash \textit{et al.}: ``A time-dependent Hamiltonian $H(t), t\in [0,t_{f}]$ is universal for AQC if, given an arbitrary quantum circuit $U$ operating on an arbitrary initial state $\vert\psi\rangle$ of $n$ p-state particles and having depth $L$, the ground state of $H(t_f)$ is equal to $U\vert\psi\rangle$ with probability greater than $\epsilon>0$, the number of particles $H(t)$ operates on is $poly(n) \forall t$, and $t_f = poly(n,L)$.\cite{RevModPhys.90.015002}''
-   
+
+   \section{Section}\label{sec:A}
    This definition stipulates that the final state of the circuit, $U\vert\psi\rangle$, is equal to the final ground state of $H(t)$, ensuring that the circuit model and adiabatic model of computation have the same output. It is important to note that as a result of their equivalence, quantum circuits can simulate adiabatic computations\cite{Farhi2000} and vice versa\cite{Aharanov2007}.
+   
+   \subsection{Subsection}
+ 	\textbf{This is how to do a subsection if you want}
    
    There are a few different constructions of universal AQC based on simulating a quantum circuit that is described by a sequence of $L$ one-qubit or two-qubit unitary gates $U_1 , U_2 , ... U_L$. One such construction is presented here to provide some context. Fermionic ground state quantum computation is a method of AQC that executes an $n$-qubit quantum circuit of depth $L$ by spatially encoding the entire temporal trajectory of the circuit, from input to output, in the ground state of a two-dimensional array of quantum dots\cite{Mizel2001}. The system is constructed with $L+1$ columns and $2n$ rows, where the rows correspond to the $\vert 0 \rangle$ and $\vert 1 \rangle$ basis states of the qubit. For each unitary gate, a Hamiltonian term is introduced with off-diagonal terms that represent hopping or tunneling of the electron between neighboring sites and unitary terms that act on the electron's spin. This Hamiltonian is tuned in by a parameter, $s \in [0,1]$, from some initially prepared ground state at $s=0$ when every electron is frozen in place and no tunneling occurs to full realization of all of the quantum gates, $U^{(1)}_{q,l}$, when $s=1$.
    
-   A much more basic system than this 2-dimensional array has recently been used to perform adiabatic quantum factorization of the number 35\cite{Xu2017}. Xu \textit{et al.} demonstrated AQC using a single spin system realized in a nitrogen-vacancy (NV) center in diamond. NV centers are attractive as good quantum processors and sensors at room temperature\cite{DOHERTY20131}. They have long coherence times, allow for fast resonant spin manipulation, and are easy to initialize and read-out using laser illumination. In this example, solving the problem begins by constructing a multiplication table (Table I) from which one can create a set of equations that will be mapped onto the problem Hamiltonian.
+   A much more basic system than this 2-dimensional array has recently been used to perform adiabatic quantum factorization of the number 35\cite{Xu2017}. Xu \textit{et al.} demonstrated AQC using a single spin system realized in a nitrogen-vacancy (NV) center in diamond. NV centers are attractive as good quantum processors and sensors at room temperature\cite{DOHERTY20131}. They have long coherence times, allow for fast resonant spin manipulation, and are easy to initialize and read-out using laser illumination. In this example, solving the problem begins by constructing a multiplication table, for example Table~\ref{tab:binmult}, from which one can create a set of equations that will be mapped onto the problem Hamiltonian.
    
    The problem Hamiltonian is constructed bitwise by directly mapping the binary variables to operators on qubits\cite{Xu2012}. In this example, we have the general Hamiltonian 
 	\begin{equation}	
@@ -128,8 +136,8 @@ and $T$ is the total evolution time. The whole system then evolves according to 
 	\end{equation}
 This comes from looking at the second column where $p$ and $q$ sum to 1 and $z_{12}$ is carried. So the equation that is mapped onto the general problem Hamiltonian is $p+q=1+2z_{12}$.
 
+\begin{table}
 \begin{flushleft}
-TABLE I. Binary multiplication table for $ 5 \times 7 = 35 $. The top row represents the significance of each bit. x and y are the multipliers. $z_{ij}$ is the carry bit from the \textit{i}th bit to the \textit{j}th bit, and the row in the bottom is the number that we want to factor\cite{Xu2017}.
 \begin{tabular}{ p{1.7cm}  p{1cm} p{1cm} p{1cm} p{1cm} p{1cm} p{1cm}} \hline\hline
  & \textit{$2^5$}  & \textit{$2^4$}  & \textit{$2^3$}
 & \textit{$2^2$}   & \textit{$2^1$} & \textit{$2^0$} \\ \hline
@@ -151,8 +159,11 @@ Carries &$z_{45}$ &$z_{34}$ &$z_{23}$ &$z_{12}$ &\hspace{0.1cm} &\hspace{0.1cm} 
 $x \times y = 35$ &1 &0 &0 &0 &1 &1 \\ 
 \hline
 \end{tabular}
-\\
 \end{flushleft}
+\caption{Binary multiplication table for $ 5 \times 7 = 35 $. The top row represents the significance of each bit. x and y are the multipliers. $z_{ij}$ is the carry bit from the \textit{i}th bit to the \textit{j}th bit, and the row in the bottom is the number that we want to factor\cite{Xu2017}.
+}
+\label{tab:binmult}
+\end{table}
 
 
 	 Now the problem can be simplified a little more by noting that the variables are binary. This reduces the equation to $p+q=1$, as $z_{12}$ must be equal to 0.	 
@@ -191,13 +202,18 @@ in the $\vert m_s,m_l \rangle$ basis of the NV qubit. The state encodes the solu
 	\begin{equation}
 		H^{rot}_{NV} = s(t)g_12S_xI_z + \left(1-s(t)\right)g_2\left(I_x + S_z\right)
 	\end{equation}
-which is almost exactly Eq. \ref{eq:Ht} using $H_p$ and $H_0$ defined for this problem. In order to complete the transformation, apply a Hadamard gate on the electron spin subspace which exchanges $S_x$ and $S_z$ and we get the Hamiltonian in the desired form
+which is almost exactly Eq.~\ref{eq:Ht} (\textbf{Note I used the tilde in the equation ref here}) using $H_p$ and $H_0$ defined for this problem. In order to complete the transformation, apply a Hadamard gate on the electron spin subspace which exchanges $S_x$ and $S_z$ and we get the Hamiltonian in the desired form
 	\begin{equation}
 		H^{rot}_{NV} = s(t)g_12S_zI_z + \left(1-s(t)\right)g_2\left(I_x + S_x\right).
 	\end{equation}
 	
 
 	\begin{figure}
+	%% try any of the variations to take more control of the figure placement
+	% h = here
+	% \begin{figure}[h] 
+	% H = HERE
+	% \begin{figure}[H]
 	\includegraphics[scale=0.49]{Fig2XuEtAl}
 	\caption{	
 		The pulse sequence of the adiabatic factorization process. Under the condition that the external magnetic field is near 510 G aligned with the NV axis, the 532 nm laser pulse initializes both the electron spin and the $^{14}$N nuclear spin. To prepare the initial state to $\Psi_i = \dfrac{1}{2}\left(\vert 0 \rangle - \vert 1 \rangle   \right)\left(\vert 0 \rangle - \vert 1 \rangle   \right)$, RF and MW pulses are applied successively. The above panel shows that the adiabatic evolution can be realized through continuously applying the RF and MW pulses. In the actual experiment, evolution of the state is driven by the optimal control pulse instead. In the lower panel is the optimal control pulse applied on the nuclear spin. (Figure and caption taken from Xu \textit{et al.}\cite{Xu2017})
@@ -224,6 +240,7 @@ which is almost exactly Eq. \ref{eq:Ht} using $H_p$ and $H_0$ defined for this p
 	
 	The circuit model certainly seems to dominate the field of quantum computation, but the adiabatic model stands its ground. It has been rigorously proven to be equivalent to the circuit model and has also been realized experimentally in a variety of host materials. However, the field still has a lot of growing to do. Not every algorithm that offers a quantum speedup in the circuit model has a parallel AQC algorithm. There are also no known problems that can be solved with a quantum speedup using AQC that are not previously known from other models of quantum computing. The scheme also still relies on \textit{a priori} knowledge of the size and/or position of its spectral gap in order to predict an optimal adiabatic schedule for evolution of the Hamiltonian.
 	
+	\section{Conclusion}
 	Even if with these shortcomings, adiabatic quantum computation offers a potentially more robust form of QC that does not require such extremely controlled conditions as those required by superconducting qubits or spin qubits. This may allow for larger scaling, lower costs, and improved fidelities. This only applies for the subset of problems with known adiabatic algorithms. There certainly appears to be a bright a future for theorists working to fill in the algorithmic gaps of AQC. As mentioned before, every circuit model algorithm has an adiabatic counterpart in principle. As is always the case in quantum computing, experimentalists have their work cut out for them in implementing currently known algorithms, improving upon fidelities, and constructing systems that can perform arbitrary computations.
 %===================================================
 
@@ -248,6 +265,6 @@ which is almost exactly Eq. \ref{eq:Ht} using $H_p$ and $H_0$ defined for this p
 
 \nocite{*} % Attaches all citations to end, regardless of whether or not they were used in text
 \bibliographystyle{apl} % Get bibliography formatting
-\bibliography{/Users/adam/Documents/finalPaper506/FinalPaperBib} % This is where your bibtex citations go
+\bibliography{FinalPaperBib} % This is where your bibtex citations go
 
 \end{document}
